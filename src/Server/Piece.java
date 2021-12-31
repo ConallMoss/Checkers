@@ -4,61 +4,71 @@ public class Piece {
 
     private boolean isWhite;
     private boolean isKing;
-    private boolean isInUse;
+    private boolean isInUse; //Deprecated
+    private int[] canMoveDir;
 
 
-    public Piece(boolean isInUse, boolean isWhite, boolean isKing){
-        this.isInUse = isInUse;
-        if(isInUse) {
-            this.isWhite = isWhite;
-            this.isKing = isKing;
+    public Piece(boolean isWhite){
+        //this.isInUse = true;
+        this.isWhite = isWhite;
+        this.isKing = false;
+        if(isWhite){
+            canMoveDir = new int[]{2, 3};
+        } else {
+            canMoveDir = new int[]{0, 1};
         }
+
     }
 
-    public Piece(Piece piece){
-        this.isInUse = piece.isInUse;
+    public Piece(){
+        this.isInUse = false;
+    }
+
+    public Piece(Piece piece) {
+        //this.isInUse = piece.isInUse;
         this.isKing = piece.isKing;
         this.isWhite = piece.isWhite;
     }
 
-    protected void pieceTaken(){
+
+    public void pieceTaken() {
         isInUse = false;
     }
 
-    protected void kingPiece(){
+    public void kingPiece() {
         isKing = true;
+        canMoveDir = new int[]{0,1,2,3};
     }
 
-    protected boolean isInUse(){
+    public boolean isInUse() {
         return isInUse;
     }
 
-    protected boolean isWhite(){
+    public boolean isWhite() {
         return isWhite;
     }
 
-    protected  boolean isKing(){
+    public boolean isKing() {
         return isKing;
     }
 
-    protected char toChar(){
-        if(isInUse) {
-            if (isWhite) {
-                if (isKing) {
-                    return BoardStates.nameToSymDict.get("WK");
-                } else {
-                    return BoardStates.nameToSymDict.get("W");
-                }
+    public int[] getMoveDir(){
+        return canMoveDir;
+    }
+
+    public char toChar() {
+        if (isWhite) {
+            if (isKing) {
+                return BoardStates.nameToSym("WK");
             } else {
-                if (isKing) {
-                    return BoardStates.nameToSymDict.get("BK");
-                } else {
-                    return BoardStates.nameToSymDict.get("B");
-                }
+                return BoardStates.nameToSym("W");
             }
         } else {
-            return BoardStates.nameToSymDict.get("E");
+            if (isKing) {
+                return BoardStates.nameToSym("BK");
+            } else {
+                return BoardStates.nameToSym("B");
+            }
         }
-
     }
 }

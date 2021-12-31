@@ -26,7 +26,7 @@ public class BoardStates {
             4, '◎'
     );
     */
-
+    //TODO add getter for these
     public static Map<Integer, Character> pieceToSymDict;
     static {
         pieceToSymDict = new LinkedHashMap<>();
@@ -38,7 +38,7 @@ public class BoardStates {
         pieceToSymDict.put(4, '◎');
     }
 
-    public static Map<String, Character> nameToSymDict;
+    private static Map<String, Character> nameToSymDict;
     static {
         nameToSymDict = new HashMap<>();
         nameToSymDict.put("N", '□');  //Not in use
@@ -49,6 +49,9 @@ public class BoardStates {
         nameToSymDict.put("BK", '◎'); //Black King
     }
 
+    public static char nameToSym(String name){
+        return nameToSymDict.get(name);
+    }
 
     public static int[][] start = new int[][]
             {{ 2,-1, 2,-1, 2,-1, 2,-1},
