@@ -5,8 +5,7 @@ import java.util.*;
 public class Board {
     //0,0 is botleft corner
     //[y][x]
-    public Tile[][] state; //TODO
-    private int turn;
+    public Tile[][] state;
     private final int SIZE;
 
     /*
@@ -21,9 +20,7 @@ public class Board {
     public Board(int sizeI){
         SIZE = sizeI;
         state = new Tile[SIZE][SIZE];
-        turn = 0;
         initBoard();
-
     }
 
     private void initBoard(){
@@ -90,13 +87,35 @@ public class Board {
     }
 
     //Check if either player has won - 0: No, 1: Player 1, 2: Player 2
-    private int checkForWinner(){
-        return 0;
+    private boolean checkForWinner(boolean playerWon){
+        boolean hasWon = true;
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Tile t = state[y][x];
+                if(t != null &&
+                t.getPiece() != null &&
+                t.getPiece().isWhite() != playerWon){
+                    hasWon = false;
+                }
+            }
+        }
+        return hasWon;
     }
 
     //Check if any piece should King
     private void checkForKings(){
-        //To implement
+        int[] kingRows = new int[]{0, SIZE-1};
+        boolean[] kingType = new boolean[]{false, true};
+        for (int i : new int[]{0,1}) {
+            for (int x = 0; x<SIZE; x++) {
+                Tile t = state[kingRows[i]][x];
+                if(t != null &&
+                        t.getPiece() != null &&
+                        t.getPiece().isWhite() == kingType[i]){
+                    t.getPiece().kingPiece();
+                }
+            }
+        }
     }
 
     private void checkKingPiece(Tile tile){
@@ -109,7 +128,7 @@ public class Board {
     //Check possible moves of a given piece
     //Note - needs to know previously taken pieces, type of piece moving, check for kings
     public List<ArrayList<int[]>> findAllPaths(int[] pos) {
-        //Need to verify with king, multipaths, others?
+        //TODO: Need to verify with king, multipaths, others?
         Tile curTile = state[pos[1]][pos[0]];
         if (curTile == null || curTile.getPiece() == null) {
             return null; //null or empty list?

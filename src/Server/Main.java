@@ -1,18 +1,34 @@
 package Server;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Main {
+    public static Scanner reader;
+
+
     public static void main(String[] args) {
         makeBoard();
+        boolean run = true;
+        setUpScanner();
+        while(run) {
+            System.out.println("test");
+            int input = reader.nextInt();
+            System.out.println(input);
+            if(input==1){run=false;}
+        }
 
     }
 
     public static void makeBoard(){
+
+    }
+
+    public static void setUpScanner(){
+        reader = new Scanner(System.in);
+    }
+
+    public static void testBoard(){
         Board board = new Board(8);
         board.state[3][1].setPiece(new Piece(false));
         board.state[6][2].setPiece(null);
