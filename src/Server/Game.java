@@ -1,46 +1,116 @@
 package Server;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 //Inputs: processed input from user
 //Interacts with board to return results
 public class Game {
     public static Board board;
-    private int turn;
+    private boolean turnIsWhite;
     private int turnCounter;
+    private int SIZE;
 
-    private List<ArrayList<int[]>> currentPaths
+    private List<ArrayList<int[]>> currentPaths;
+    private int[] currentPos;
 
     public Game(int size){
-        board = new Board(8);
+        board = new Board(size);
+        SIZE = size;
+        turnIsWhite = true;
     }
 
 
 
     //Turn:
         //Say which player to move
+        //(Not yet) Check for forced moves
         //Player picks piece
+        //Verify piece pos
         //Get possible moves for piece
         //Player picks move path
         //Make move path
         //Check for king + winners + valid state
 
-    public int getTurn(){
-        return turn;
+    public boolean getTurn(){
+        return turnIsWhite;
     }
 
-    private _ getMoves(int[] pos){
-        List<ArrayList<int[]>> currentPaths = board.findAllPaths(pos);
-        Set<int[]> endPoints = new LinkedHashSet<>();
-        Set<int[]> dupEndPoints = new LinkedHashSet<>();
+    public int getMoves(int[] pos) {
+        currentPos = pos;
+        currentPaths = board.findAllPaths(pos);
+        return currentPaths.size();
+    }
 
-        for (ArrayList<int[]> path: currentPaths) {
+    public void makeMove(int pathNum){
+        ArrayList<int[]> pathToTake = currentPaths.get(pathNum);
+        board.movePiece(currentPos, pathToTake);
+    }
 
+    public boolean endOfTurn(){
+        assert(board.validateBoard());
+        if(board.checkForWinner(turnIsWhite)){
+            return true;
         }
-        //Pretty print board with paths
+        board.checkForKings();
+        turnIsWhite = !turnIsWhite;
+        turnCounter++;
+        return false;
+    }
+
+    public boolean verifyPos(int[] pos){
+        int y = pos[0];
+        int x = pos[1];
+        return ((x >= 0 && x < SIZE && y >= 0 && y < SIZE) &&
+                board.getTile(pos) != null &&
+                board.getTile(pos).getPiece() != null &&
+                board.getTile(pos).getPiece().isWhite() == turnIsWhite);
+    }
+
+    public void printWithPath(){
+        List<int[]> endPoints = new ArrayList<>();
+        List<int[]> dupEndPoints = new ArrayList<>();
+        //Does it work because references would be different ???
+        for (ArrayList<int[]> path: currentPaths) {
+            int[] endPoint = path.get(path.size() - 1);
+            if(endPoints.contains(endPoint)){
+                if(!dupEndPoints.contains(endPoint)){
+                    dupEndPoints.add(endPoint);
+                }
+            } else {
+                endPoints.add(endPoint);
+            }
+        }
+
+        System.out.println(endPoints.toString());
+        //TODO: implement multipaths
+        StringBuilder toPrint = new StringBuilder();
+        //int posMoveCount = 1;
+        for (int i = 7;i>-1;i--){
+            for (int j = 0; j < 8; j++) {
+                Integer isAnEndPoint = isInList(new int[]{j, i}, endPoints);
+                if(isAnEndPoint!=null) {
+                    toPrint.append(isAnEndPoint+1).append("|");
+                } else {
+                    toPrint.append(board.tileToChar(board.getTile(new int[]{j, i}))).append("|");
+                }
+            }
+            toPrint.append('\n');
+        }
+        System.out.println(toPrint);
+
+    }
+
+    private Integer isInList(int[] val, List<int[]> ls){
+        for (int i = 0; i < ls.size(); i++) {
+            if(Arrays.equals(ls.get(i), val)){
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public void printBoard(){
+        board.pprintBoard();
     }
 }

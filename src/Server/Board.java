@@ -73,7 +73,8 @@ public class Board {
     //Checks for stuff
 
     //Checks validity of board TODO: assert(validateBoard)
-    private boolean validateBoard(){
+
+    public boolean validateBoard(){
         boolean isValid = true;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -87,7 +88,7 @@ public class Board {
     }
 
     //Check if either player has won - 0: No, 1: Player 1, 2: Player 2
-    private boolean checkForWinner(boolean playerWon){
+    public boolean checkForWinner(boolean playerWon){
         boolean hasWon = true;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -103,7 +104,7 @@ public class Board {
     }
 
     //Check if any piece should King
-    private void checkForKings(){
+    public void checkForKings(){
         int[] kingRows = new int[]{0, SIZE-1};
         boolean[] kingType = new boolean[]{false, true};
         for (int i : new int[]{0,1}) {
@@ -250,7 +251,7 @@ public class Board {
         //redo for correct print direction
         String toPrint = "";
         for (int i = 7;i>-1;i--){
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < 8; j++) {
                 toPrint = toPrint + tileToChar(state[i][j]) + "|";
             }
             toPrint = toPrint + '\n';

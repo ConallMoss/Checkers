@@ -39,6 +39,7 @@ public class BoardStates {
     }
 
     private static Map<String, Character> nameToSymDict;
+    /*
     static {
         nameToSymDict = new HashMap<>();
         nameToSymDict.put("N", '□');  //Not in use
@@ -47,6 +48,17 @@ public class BoardStates {
         nameToSymDict.put("B", 'O');  //Black
         nameToSymDict.put("WK", '✘'); //White King
         nameToSymDict.put("BK", '◎'); //Black King
+    }
+     */
+
+    static {
+        nameToSymDict = new HashMap<>();
+        nameToSymDict.put("N", '∙');  //Not in use
+        nameToSymDict.put("E", '•');  //Empty
+        nameToSymDict.put("W", '■');  //White
+        nameToSymDict.put("B", '□');  //Black
+        nameToSymDict.put("WK", '●'); //White King
+        nameToSymDict.put("BK", '○'); //Black King
     }
 
     public static char nameToSym(String name){

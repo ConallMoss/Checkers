@@ -2,26 +2,81 @@ package Server;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Main {
     public static Scanner reader;
 
 
     public static void main(String[] args) {
-        makeBoard();
-        boolean run = true;
-        setUpScanner();
-        while(run) {
-            System.out.println("test");
-            int input = reader.nextInt();
-            System.out.println(input);
-            if(input==1){run=false;}
+
+            gameLoop();
+
         }
 
+    public static void gameLoop(){
+        Game game = makeGame();
+        setUpScanner();
+        boolean run = true;
+        while(run) {
+            System.out.println(game.getTurn() ? "White's Turn:" : "Black's Turn");
+            game.printBoard();
+            int[] pos;
+            do{
+                System.out.println("Input piece co-ordinates:");
+                //try { TODO: UNCHECKED INPUT
+                String[] posString = reader.next().split(",");
+                pos = Stream.of(posString).mapToInt(Integer::parseInt).toArray();
+                System.out.println(Arrays.toString(pos));
+                System.out.println(game.verifyPos(pos));
+                 //} catch (ArrayIndexOutOfBoundsException) {}
+            } while (!game.verifyPos(pos));
+            int numPaths = game.getMoves(pos);
+            //TODO: Check if piece has moves to make
+            //TODO: Change display symbol for selected piece
+            game.printWithPath();
+            int pathNum;
+            do{
+                System.out.println("Input path number:");
+                //TODO: UNCHECKED INPUT
+                pathNum = reader.nextInt();
+            } while (!(pathNum > 0 && pathNum <= numPaths));
+            game.makeMove(pathNum-1);
+            if(game.endOfTurn()){
+                run = false;
+                System.out.println((game.getTurn()?"White":"Black")+ " has won!");
+            }
+
+        }
+        //Turn:
+        //Say which player to move
+        //(Not yet) Check for forced moves
+        //Player picks piece
+        //Get possible moves for piece
+        //Player picks move path
+        //Make move path
+        //Check for king + winners + valid state
     }
 
-    public static void makeBoard(){
+    public static void scannerthing() {
+        boolean run = true;
+        setUpScanner();
+        while (run) {
+            System.out.println("test");
+            String input = reader.nextLine();
+            String[] pos = input.split(" ");
 
+            System.out.println(pos[0]);
+            System.out.println(pos[1]);
+            if (input == "") {
+                run = false;
+            }
+        }
+    }
+
+    public static Game makeGame(){
+        Game game = new Game(8);
+        return game;
     }
 
     public static void setUpScanner(){
