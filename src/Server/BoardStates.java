@@ -65,6 +65,21 @@ public class BoardStates {
         return nameToSymDict.get(name);
     }
 
+    private static Map<String, Character> nameToBasicDict;
+    static {
+        nameToBasicDict = new HashMap<>();
+        nameToBasicDict.put("N", 'N');  //Not in use
+        nameToBasicDict.put("E", 'E');  //Empty
+        nameToBasicDict.put("W", 'W');  //White
+        nameToBasicDict.put("B", 'B');  //Black
+        nameToBasicDict.put("WK", 'K'); //White King
+        nameToBasicDict.put("BK", 'Q'); //Black King
+    }
+    public static char nameToBasic(String name){
+        return nameToBasicDict.get(name);
+    }
+
+
     public static int[][] start = new int[][]
             {{ 2,-1, 2,-1, 2,-1, 2,-1},
              {-1, 2,-1, 2,-1, 2,-1, 2},

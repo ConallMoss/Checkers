@@ -274,4 +274,14 @@ public class Board {
             return t.getPiece().toChar();
         }
     }
+
+    public char tileToBasic(Tile t){
+        if(t==null){
+            return BoardStates.nameToBasic("N");
+        } else if (t.getPiece()==null) {
+            return BoardStates.nameToBasic("E");
+        } else {
+            return t.getPiece().toChar();
+        }
+    }
 }

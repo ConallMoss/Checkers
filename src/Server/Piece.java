@@ -71,4 +71,20 @@ public class Piece {
             }
         }
     }
+
+    public char toBasic() {
+        if (isWhite) {
+            if (isKing) {
+                return BoardStates.nameToBasic("WK");
+            } else {
+                return BoardStates.nameToBasic("W");
+            }
+        } else {
+            if (isKing) {
+                return BoardStates.nameToBasic("BK");
+            } else {
+                return BoardStates.nameToBasic("B");
+            }
+        }
+    }
 }

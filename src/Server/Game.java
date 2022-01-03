@@ -14,6 +14,9 @@ public class Game {
     private List<ArrayList<int[]>> currentPaths;
     private int[] currentPos;
 
+    private List<int[]> endPoints;
+    private List<int[]> dupEndPoints;
+
     public Game(int size){
         board = new Board(size);
         SIZE = size;
@@ -67,7 +70,30 @@ public class Game {
                 board.getTile(pos).getPiece().isWhite() == turnIsWhite);
     }
 
-    public void printWithPath(){
+    public char[][] getBasicStateWithPath(){
+
+        getEndPoints();
+
+        System.out.println(endPoints.toString());
+        //TODO: implement multipaths
+        char[][] basicState = new char[SIZE][SIZE];
+
+        //int posMoveCount = 1;
+        for (int i = 7;i>-1;i--){
+            for (int j = 0; j < 8; j++) {
+                Integer isAnEndPoint = isInList(new int[]{j, i}, endPoints);
+                if(isAnEndPoint!=null) {
+                    basicState[i][j] = (char)(isAnEndPoint+1);
+                } else {
+                    basicState[i][j] = board.tileToBasic(board.getTile(new int[]{j, i}));
+                }
+            }
+        }
+        return basicState;
+
+    }
+
+    private void getEndPoints(){
         List<int[]> endPoints = new ArrayList<>();
         List<int[]> dupEndPoints = new ArrayList<>();
         //Does it work because references would be different ???
@@ -81,6 +107,10 @@ public class Game {
                 endPoints.add(endPoint);
             }
         }
+    }
+    public void printWithPath(){
+
+        getEndPoints();
 
         System.out.println(endPoints.toString());
         //TODO: implement multipaths
@@ -112,5 +142,17 @@ public class Game {
 
     public void printBoard(){
         board.pprintBoard();
+    }
+
+    public char[][] getBasicState(){
+        //redo for correct print direction
+        char[][] basicState = new char[SIZE][SIZE];
+        for (int i = 7;i>-1;i--){
+            for (int j = 0; j < 8; j++) {
+                basicState[i][j] = board.tileToBasic(board.getTile(new int[]{j, i}));
+            }
+        }
+
+        return basicState;
     }
 }
