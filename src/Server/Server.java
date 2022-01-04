@@ -1,27 +1,28 @@
 package Server;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Server {
     public static Scanner reader;
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        System.out.println(InetAddress.getLocalHost());
             String PORT = "7777";
 
             Socket[] sockets = waitForSockets();
 
-            GameInstance gameInstance = new GameInstance(sockets);
+            ConnectedGame connectedGame = new ConnectedGame(sockets);
 
         }
 
     private static Socket[] waitForSockets() throws IOException {
         ServerSocket serverSocket = new ServerSocket(7777);
+        //serverSocket.bind()
         Socket[] sockets = new Socket[2];
         System.out.println("Awaiting connections...");
         sockets[0] = serverSocket.accept();

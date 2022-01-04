@@ -281,7 +281,7 @@ public class Board {
         } else if (t.getPiece()==null) {
             return BoardStates.nameToBasic("E");
         } else {
-            return t.getPiece().toChar();
+            return t.getPiece().toBasic();
         }
     }
 }

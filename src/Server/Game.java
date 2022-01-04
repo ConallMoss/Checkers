@@ -70,7 +70,7 @@ public class Game {
                 board.getTile(pos).getPiece().isWhite() == turnIsWhite);
     }
 
-    public char[][] getBasicStateWithPath(){
+    public char[][] getBasicStateWithPaths(){
 
         getEndPoints();
 
@@ -83,7 +83,7 @@ public class Game {
             for (int j = 0; j < 8; j++) {
                 Integer isAnEndPoint = isInList(new int[]{j, i}, endPoints);
                 if(isAnEndPoint!=null) {
-                    basicState[i][j] = (char)(isAnEndPoint+1);
+                    basicState[i][j] = (char)(isAnEndPoint+1 + '0');
                 } else {
                     basicState[i][j] = board.tileToBasic(board.getTile(new int[]{j, i}));
                 }
@@ -94,8 +94,8 @@ public class Game {
     }
 
     private void getEndPoints(){
-        List<int[]> endPoints = new ArrayList<>();
-        List<int[]> dupEndPoints = new ArrayList<>();
+        endPoints = new ArrayList<>();
+        dupEndPoints = new ArrayList<>();
         //Does it work because references would be different ???
         for (ArrayList<int[]> path: currentPaths) {
             int[] endPoint = path.get(path.size() - 1);
