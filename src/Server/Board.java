@@ -87,7 +87,7 @@ public class Board {
         return isValid; //Returns if board in valid state
     }
 
-    //Check if either player has won - 0: No, 1: Player 1, 2: Player 2
+    //Check if either player has won - 0: No, 1: GameState 1, 2: GameState 2
     public boolean checkForWinner(boolean playerWon){
         boolean hasWon = true;
         for (int y = 0; y < 8; y++) {

@@ -28,10 +28,10 @@ public class Game {
     //Turn:
         //Say which player to move
         //(Not yet) Check for forced moves
-        //Player picks piece
+        //GameState picks piece
         //Verify piece pos
         //Get possible moves for piece
-        //Player picks move path
+        //GameState picks move path
         //Make move path
         //Check for king + winners + valid state
 
@@ -72,7 +72,7 @@ public class Game {
 
     public char[][] getBasicStateWithPaths(){
 
-        getEndPoints();
+        findEndPoints();
 
         System.out.println(endPoints.toString());
         //TODO: implement multipaths
@@ -93,7 +93,7 @@ public class Game {
 
     }
 
-    private void getEndPoints(){
+    private void findEndPoints(){
         endPoints = new ArrayList<>();
         dupEndPoints = new ArrayList<>();
         //Does it work because references would be different ???
@@ -108,9 +108,14 @@ public class Game {
             }
         }
     }
+
+    public List<int[]> getEndPoints(){
+        return endPoints;
+    }
+
     public void printWithPath(){
 
-        getEndPoints();
+        findEndPoints();
 
         System.out.println(endPoints.toString());
         //TODO: implement multipaths

@@ -66,12 +66,13 @@ public class ConnectedGame {
             //game.printWithPath();
             sendTo(currentTurn, "basicStateWithPaths");
             sendTo(currentTurn, game.getBasicStateWithPaths());
+            sendTo(currentTurn, game.getEndPoints());
             int pathNum;
             do {
                 //System.out.println("Input path number:");
                 sendTo(currentTurn, "reqPathNo");
                 //TODO: UNCHECKED INPUT
-                pathNum = Integer.parseInt((String)listen(currentTurn));
+                pathNum = (int)listen(currentTurn);
             } while (!(pathNum > 0 && pathNum <= numPaths));
             game.makeMove(pathNum - 1);
             updatePlayers();
@@ -89,9 +90,9 @@ public class ConnectedGame {
     //Turn:
     //Say which player to move
     //(Not yet) Check for forced moves
-    //Player picks piece
+    //GameState picks piece
     //Get possible moves for piece
-    //Player picks move path
+    //GameState picks move path
     //Make move path
     //Check for king + winners + valid state
 
@@ -118,6 +119,8 @@ public class ConnectedGame {
 
     private void initPlayers() throws IOException {
         sendToAll(game.getBasicState());
+        sendTo(currentTurn, true);
+        sendTo(1-currentTurn, false);
     }
 
     private void updatePlayers() throws IOException {

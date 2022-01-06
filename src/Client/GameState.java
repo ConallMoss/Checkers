@@ -1,12 +1,15 @@
 package Client;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Player {
-    public char[][] playerState;
-    private char[][] playerPathState;
+public class GameState {
+    public char[][] state;
+    private char[][] playerPathState; //DO NOT USE
+    public List<int[]> pathEnds;
     private int SIZE;
+    public boolean isWhite;
 
     private static Map<Character, Character> basicToCharDict;
     static {
@@ -26,29 +29,31 @@ public class Player {
         }
     }
 
-    public Player(){
-        playerState = new char[8][8];
+    public GameState(){
+        state = new char[8][8];
         SIZE = 8;
     }
 
     public void initPlayer(char[][] playerState, int size){
-        this.playerState = playerState;
+        this.state = playerState;
         this.SIZE = size;
     }
 
     public void updatePlayerState(char[][] newPlayerState){
-        playerState = newPlayerState;
+        state = newPlayerState;
     }
 
     public void updatePlayerPathState(char[][] newPlayerPathState){
         playerPathState = newPlayerPathState;
     }
 
+    public void updatePathEnds(List<int[]> newPathEnds){ pathEnds = newPathEnds;}
+
     public void printPlayerState(){
         StringBuilder toPrint = new StringBuilder();
         for (int i = SIZE-1; i >= 0; i--) {
             for (int j = 0; j < SIZE; j++) {
-                toPrint.append(basicToChar(playerState[i][j])).append("|");
+                toPrint.append(basicToChar(state[i][j])).append("|");
             }
             toPrint.append("\n");
         }
@@ -70,7 +75,7 @@ public class Player {
         String toPrint = "";
         for (int i = SIZE-1; i >= 0; i--) {
             for (int j = 0; j < SIZE; j++) {
-                toPrint = toPrint + playerState[i][j]  + ("|");
+                toPrint = toPrint + state[i][j]  + ("|");
             }
             toPrint = toPrint + ("\n");
         }
