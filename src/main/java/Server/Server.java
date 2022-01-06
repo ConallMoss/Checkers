@@ -12,7 +12,7 @@ public class Server {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         System.out.println(InetAddress.getLocalHost());
-            String PORT = "7777";
+
 
             Socket[] sockets = waitForSockets();
 
@@ -21,7 +21,13 @@ public class Server {
         }
 
     private static Socket[] waitForSockets() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(7777);
+
+        String PORT = System.getenv("PORT");
+        if (PORT == null){
+            PORT = "7777";
+        }
+
+        ServerSocket serverSocket = new ServerSocket(Integer.parseInt(PORT));
         //serverSocket.bind()
         Socket[] sockets = new Socket[2];
         System.out.println("Awaiting connections...");
