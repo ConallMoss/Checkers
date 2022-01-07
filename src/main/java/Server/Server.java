@@ -1,4 +1,4 @@
-package Server;
+package main.java.Server;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -8,26 +8,31 @@ import java.util.*;
 
 public class Server {
     public static Scanner reader;
+    public static ServerSocket serverSocket;
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         System.out.println(InetAddress.getLocalHost());
 
-
-            Socket[] sockets = waitForSockets();
-
-            ConnectedGame connectedGame = new ConnectedGame(sockets);
-
-        }
-
-    private static Socket[] waitForSockets() throws IOException {
-
         String PORT = System.getenv("PORT");
         if (PORT == null){
             PORT = "7777";
         }
+        serverSocket = new ServerSocket(Integer.parseInt(PORT));
 
-        ServerSocket serverSocket = new ServerSocket(Integer.parseInt(PORT));
+            //Socket[] sockets = waitForSockets();
+            while(true) {
+                Socket[] sockets = waitForSockets();
+                try {
+                    ConnectedGame connectedGame = new ConnectedGame(sockets);
+                } catch (IOException e) {
+                }
+            }
+    }
+
+    private static Socket[] waitForSockets() throws IOException {
+
+
         //serverSocket.bind()
         Socket[] sockets = new Socket[2];
         System.out.println("Awaiting connections...");

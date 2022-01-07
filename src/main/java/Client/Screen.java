@@ -1,4 +1,4 @@
-package Client;
+package main.java.Client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +32,7 @@ public class Screen extends JPanel implements ActionListener {
     public boolean hasLost;
 
     private Client client;
+    public boolean gameStarted;
     GameState gameState;
 
 
@@ -56,6 +57,8 @@ public class Screen extends JPanel implements ActionListener {
         hasWon = false;
         hasLost = false;
 
+        gameStarted = false;
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -69,6 +72,8 @@ public class Screen extends JPanel implements ActionListener {
                     if(waitForPiece){
                         try {
                             sendPiece(x, y);
+                            selectedTileX = x;
+                            selectedTileY = y;
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -83,33 +88,34 @@ public class Screen extends JPanel implements ActionListener {
 
             }
         });
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
         repaint();
         Toolkit.getDefaultToolkit().sync();
+
     }
 
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-
-        drawBoard(g);
-        drawPieces(g);
+        if(gameStarted) {
+            drawBoard(g);
+            drawPieces(g);
+        }
         drawText(g);
-        //test draw to screen
-        g.setColor(new Color(255, 100, 100));
-        g.fillRect(x,y++, 50, 50);
 
+        //test draw to screen
 
         Point mousePos = getMousePosition();
         if (mousePos != null) {
             int mouseX = mousePos.x;
             int mouseY = mousePos.y;
 
-            g.setColor(new Color(100, 255, 100));
-            g.fillRect(mouseX, mouseY, 20, 20);
+            g.setColor(new Color(200, 50, 200));
+            g.fillOval(mouseX-1, mouseY-1, 2, 2);
         }
     }
 
@@ -138,6 +144,10 @@ public class Screen extends JPanel implements ActionListener {
             g.fillRoundRect((int)(boardX + (j+0.1) * tileWidth), (int)(boardY + (i+0.1) * tileHeight), (int)(tileWidth*0.8), (int)(tileHeight*0.8), 10, 10 );
         }
         else{
+            if(waitForPath && j==selectedTileX && (SIZE-i-1)==selectedTileY){
+                g.setColor(new Color(225, 225, 25));
+                g.fillOval((int)(boardX + (j+0.09) * tileWidth), (int)(boardY + (i+0.09) * tileHeight), (int)(tileWidth*0.84), (int)(tileHeight*0.84));
+            }
             if(piece == 'W' || piece == 'K'){
                 g.setColor(new Color(225, 25, 25));
             } else {
@@ -165,27 +175,33 @@ public class Screen extends JPanel implements ActionListener {
                 RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         // set the text color and font
         g2d.setFont(new Font("Lato", Font.BOLD, 25));
-
-        if(hasWon){
-            g2d.setColor(new Color(0, 255, 0));
-            text = ("You have Won!");
-        } else if (hasLost){
-            g2d.setColor(new Color(255, 0, 0));
-            text = ("You have Lost.");
-        }else if (!isCurrentTurn){
-            g2d.setColor(new Color(30, 120, 139));
-            text = "Opponent's Turn";
-        } else {
-            g2d.setColor(new Color(30, 201, 139));
-            if(isPieceOrPath){
-                text = "Your Turn - Select piece";
+        if(gameStarted) {
+            if (hasWon) {
+                g2d.setColor(new Color(0, 255, 0));
+                text = ("You have Won!");
+            } else if (hasLost) {
+                g2d.setColor(new Color(255, 0, 0));
+                text = ("You have Lost.");
+            } else if (!isCurrentTurn) {
+                g2d.setColor(new Color(30, 120, 139));
+                text = "Opponent's Turn";
             } else {
-                text = "Your Turn - Select path";
+                g2d.setColor(new Color(30, 201, 139));
+                if (isPieceOrPath) {
+                    text = "Your Turn - Select piece";
+                } else {
+                    text = "Your Turn - Select path";
+                }
             }
+            g2d.drawString(text, 100, 100);
+            g2d.drawString(gameState.isWhite ? "Playing as: White" : "Playing as: Black", 100, 150);
+        } else {
+            g2d.setColor(new Color(176, 38, 255));
+            g2d.drawString("Waiting for game to start...", 200, 200);
         }
-        g2d.drawString(text, 100, 100);
-        g2d.drawString(gameState.isWhite ? "Playing as: White": "Playing as: Black", 100, 150);
     }
+
+
 
     private int[] coordToPos(int[] coord){
         int posX = boardX + boardWidth / 16 + boardWidth * coord[0] / 8;

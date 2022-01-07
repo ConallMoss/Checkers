@@ -1,4 +1,4 @@
-package Client;
+package main.java.Client;
 
 import javax.swing.*;
 import java.io.*;
@@ -33,11 +33,17 @@ public class Client {
         socket = new Socket(host, 7777);
         System.out.println("Connection");
 
+        initWindow();
+
+        System.out.println(1);
         outputStream = socket.getOutputStream();
+        System.out.println(2);
         objectOutputStream = new ObjectOutputStream(outputStream);
+        System.out.println(3);
         inputStream = socket.getInputStream();
+        System.out.println(4);
         objectInputStream = new ObjectInputStream(inputStream);
-        reader = new Scanner(System.in);
+        System.out.println("1");
 
         /*
         SwingUtilities.invokeLater(new Runnable() {
@@ -48,15 +54,14 @@ public class Client {
 
          */
 
-        initWindow();
-
+        //timer.start();
         waitForStart(); //blocks for gameLoop
         gameLoop();
     }
 
     private void gameLoop() throws IOException, ClassNotFoundException {
-        timer.start();
         screen.gameState.directPrintBoard();
+        screen.gameStarted = true;
         run = true;
         while(true){
             listen();
@@ -69,6 +74,7 @@ public class Client {
     }
     */
     private void waitForStart() throws IOException, ClassNotFoundException {
+        System.out.println("Waiting");
         char[][] state = (char[][]) objectInputStream.readObject();
         screen.gameState.updatePlayerState(state);
         boolean isWhite = (boolean) objectInputStream.readObject();
@@ -84,6 +90,7 @@ public class Client {
                 System.out.println("Basic recieved");
                 char[][] state = (char[][]) objectInputStream.readObject();
                 screen.gameState.updatePlayerState(state);
+                screen.repaint();
                 //GameState.printPlayerState();
                 break;
             case "basicStateWithPaths":
@@ -139,7 +146,7 @@ public class Client {
 
     private void initWindow() {
 
-        window = new JFrame("test");
+        window = new JFrame("Checker Game");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         screen = new Screen(this);
         window.add(screen);
@@ -148,5 +155,7 @@ public class Client {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         timer = new Timer(25, screen);
+        timer.start();
+
     }
 }

@@ -1,4 +1,4 @@
-package Client;
+package main.java.Client;
 
 import java.util.HashMap;
 import java.util.List;

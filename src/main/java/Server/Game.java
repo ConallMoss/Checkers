@@ -1,4 +1,4 @@
-package Server;
+package main.java.Server;
 
 import java.lang.reflect.Array;
 import java.util.*;
