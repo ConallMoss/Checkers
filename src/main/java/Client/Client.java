@@ -101,7 +101,6 @@ public class Client {
                 //GameState.directPrintPathBoard();
                 break;
             case "isTurn":
-                //TODO
                 screen.isCurrentTurn = true;
                 break;
             case "isNotTurn":

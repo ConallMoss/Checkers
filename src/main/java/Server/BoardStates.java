@@ -26,7 +26,7 @@ public class BoardStates {
             4, '◎'
     );
     */
-    //TODO add getter for these
+
     public static Map<Integer, Character> pieceToSymDict;
     static {
         pieceToSymDict = new LinkedHashMap<>();

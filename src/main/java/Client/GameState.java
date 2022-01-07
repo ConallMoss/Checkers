@@ -93,7 +93,4 @@ public class GameState {
         System.out.println(toPrint);
     }
 
-    public char numToChar(int num){
-        return 'a'; //TODO
-    }
 }

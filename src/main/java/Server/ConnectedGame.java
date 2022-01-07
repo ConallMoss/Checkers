@@ -62,7 +62,6 @@ public class ConnectedGame {
             } while (!game.verifyPos(pos));
             int numPaths = game.getMoves(pos);
             //TODO: Check if piece has moves to make
-            //TODO: Change display symbol for selected piece
             //game.printWithPath();
             sendTo(currentTurn, "basicStateWithPaths");
             sendTo(currentTurn, game.getBasicStateWithPaths());

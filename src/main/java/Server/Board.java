@@ -72,7 +72,7 @@ public class Board {
 
     //Checks for stuff
 
-    //Checks validity of board TODO: assert(validateBoard)
+    //Checks validity of board
 
     public boolean validateBoard(){
         boolean isValid = true;
@@ -129,7 +129,7 @@ public class Board {
     //Check possible moves of a given piece
     //Note - needs to know previously taken pieces, type of piece moving, check for kings
     public List<ArrayList<int[]>> findAllPaths(int[] pos) {
-        //TODO: Need to verify with king, multipaths, others?
+        //TODO: Multipaths: picks at random, infinite loop for kings
         Tile curTile = state[pos[1]][pos[0]];
         if (curTile == null || curTile.getPiece() == null) {
             return null; //null or empty list?
